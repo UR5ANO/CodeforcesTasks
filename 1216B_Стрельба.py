@@ -1,20 +1,28 @@
 n = int(input())
 s = map(int,input().split())
 s = list(s)
-ss = []
-c = 0
-for i in range(n):
-    c = c + (max(s)*(i) + 1)
-    ss.append(s.index(max(s))+1)
-    s[s.index(max(s))] = 0
-print(c)
-print(' '.join(map(str,ss)))
 
+# max(s) - это дорогая операция (O(n)), точно так же, как и s.index(a)
+# Хотя для этой задачи это не принципиально, все же программу можно сильно ускорить
+# Сейчас её сложность равна O(n^2), а мы ускорим до O(n * log(n))
 
+# Чтобы не искать каждый раз максимум, вначале отсортируем список
+# Так как нам нужно сортировать не только элементы, но и их индексы, построим промежуточный список:
+l = [(i, a) for i, a in enumerate(s)]
 
+# Отсортируем его. При этом исходные индексы отсортируются вместе с элементами
+# Сортировка работает за O(n * log(n)). Это самая сложная часть программы.
+l = sorted(l, reverse=True, key=lambda x: x[1])
 
+banok_sbito = 0
+otvet = 0
+poryadok_banok = []
 
+# Это простой проход по циклу. Сложность - O(n)
+for i, a in l:
+    otvet += a * banok_sbito + 1
+    banok_sbito += 1
+    poryadok_banok.append(i + 1)
 
-
-
-
+print(otvet)
+print(' '.join(map(str, poryadok_banok)))
