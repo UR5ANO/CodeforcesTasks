@@ -1,18 +1,16 @@
+def sravnen(x,y):
+    if x/y <= 1:
+        res = 0
+    elif x%y == 0:
+        res = x/y
+    else:
+        res = x//y + 1
+    return res 
+
 n,m,a = map(int,input().split())
 
-if n/a <= 1:
-    k = 0
-elif n%a == 0:
-    k = n/a
-else:
-    k = n//a + 1
-
-if m/a <= 1:
-    p = 0
-elif m%a == 0:
-    p = m/a
-else:
-    p = m//a + 1
+k = sravnen(n,a)
+p = sravnen(m,a)
 
 if k + p == 0:
     print('1')
