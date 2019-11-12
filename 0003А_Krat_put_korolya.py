@@ -1,48 +1,54 @@
-s = input()
-t = input()
+MIN_LETTER = 'a'
+MIN_DIGIT = '1'
 
-import math
-b = ord(t[0]) - ord(s[0])
-b_mod = math.fabs(b)
-c = int(t[1]) - int(s[1])
-c = int(c)
-c_mod = math.fabs(c)
-otvet = max(b_mod,c_mod)
-print(int(otvet))
+X_DIRECTION_TO_MOVE = {
+    1: "R",
+    -1: "L",
+}
+Y_DIRECTION_TO_MOVE = {
+    1: "U",
+    -1: "D",
+}
 
-while b_mod != c_mod:
-    if c_mod < b_mod:
-        if b > 0:
-            b_mod = b_mod - 1
-            print('R')
-        else: 
-            b_mod = b_mod - 1
-            print('L')
-        
+
+def get_cell_coords(cell: str):
+    letter = cell[0]
+    digit = cell[1]
+    return [ord(letter) - ord(MIN_LETTER), ord(digit) - ord(MIN_DIGIT)]
+
+
+def get_direction(x, y):
+    if y > x:
+        return 1
+    elif y < x:
+        return -1
     else:
-        if c > 0:
-            c_mod = c_mod - 1
-            print('U')
-        else:
-            c_mod = c_mod - 1
-            print('D')
-
-while c_mod > 0 and b_mod > 0:
-    if c > 0 and b >0:
-        c_mod = c_mod - 1
-        b_mod = b_mod - 1
-        print('RU')
-    elif c > 0 and b < 0:
-        c_mod = c_mod - 1
-        b_mod = b_mod - 1
-        print('LU')
-    elif c < 0 and b < 0:
-        c_mod = c_mod - 1
-        b_mod = b_mod - 1
-        print('LD')
-    else:
-        c_mod = c_mod - 1
-        b_mod = b_mod - 1
-        print('RD')
+        return 0
 
 
+current_cell = input()
+destination_cell = input()
+
+current_point = get_cell_coords(current_cell)
+destination_point = get_cell_coords(destination_cell)
+
+
+moves = []
+moves_count = 0
+
+while current_point != destination_point:
+    move = ""
+    x_direction = get_direction(current_point[0], destination_point[0])
+    if x_direction:
+        move += X_DIRECTION_TO_MOVE[x_direction]
+        current_point[0] += x_direction
+    y_direction = get_direction(current_point[1], destination_point[1])
+    if y_direction:
+        move += Y_DIRECTION_TO_MOVE[y_direction]
+        current_point[1] += y_direction
+    moves.append(move)
+    moves_count += 1
+
+print(moves_count)
+for move in moves:
+    print(move)
